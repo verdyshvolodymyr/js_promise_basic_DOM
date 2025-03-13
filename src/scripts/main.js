@@ -1,37 +1,46 @@
 'use strict';
 
-
 const logo = document.querySelector('.logo');
 const body = document.querySelector('body');
 
-logo.addEventListener('click', hendler);
+logo.addEventListener('click', handler);
 
 const messageSuc = 'Promise was resolved!';
 const messageErr = 'Promise was rejected!';
 
 function first() {
   const div = document.createElement('div');
-  div.className = 'message'
+
+  div.className = 'message';
   div.textContent = messageSuc;
 
-  body.append(div)
+  body.append(div);
 }
 
 function second() {
   const div = document.createElement('div');
-  div.className = 'message error-message'
+
+  div.className = 'message error-message';
   div.textContent = messageErr;
 
-  body.append(div)
+  body.append(div);
 }
 
-function hendler() {
+function handler() {
   return new Promise((resolve, reject) => {
-
-    resolve(first());
-  })
+    resolve();
+    first();
+  });
 }
 
-let promise = new Promise(function(resolve, reject) {
-  setTimeout(() => reject(second()), 3000);
-});
+const promErr = new Promise(function (resolve, reject) {
+  setTimeout(() => {
+    reject(new Error(messageErr));
+  }, 3000);
+}).catch(error => second(error));
+
+function tasty() {
+  return promErr;
+}
+
+tasty();
